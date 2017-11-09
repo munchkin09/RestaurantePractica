@@ -1,11 +1,38 @@
 package es.carlosdevops.clc.restaurantepractica.model
 
+import java.io.Serializable
+import java.net.URL
+
 /**
  * Created by carlosledesma on 6/11/17.
  * Model to contain the menu dishes
  */
 
-data class Dish(var name: String, var prize: String, var allergens: Array<String>?, var text: String, var image: String  ) {
+data class Dish(var name: String,
+                var prize: Float,
+                var allergens: List<ALLERGENS>?,
+                var text: String,
+                var image: URL  ): Serializable {
+
+    companion object {
+
+
+
+
+
+        fun getAllergenFromString(str:String): ALLERGENS {
+
+           return when(str) {
+                "Paprika" -> ALLERGENS.PAPRIKA
+                "Meat" -> ALLERGENS.MEAT
+                "Fish" -> ALLERGENS.FISH
+                "Onion" -> ALLERGENS.ONION
+                "Sesame" -> ALLERGENS.SESAME
+                "Milk" -> ALLERGENS.MILK
+               else -> ALLERGENS.NONE
+            }
+        }
+    }
 
     enum class ALLERGENS {
         PAPRIKA,
@@ -13,21 +40,10 @@ data class Dish(var name: String, var prize: String, var allergens: Array<String
         FISH,
         ONION,
         SESAME,
-        MILK
+        MILK,
+        NONE
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as Dish
 
-        if (name != other.name) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        return name.hashCode()
-    }
 }

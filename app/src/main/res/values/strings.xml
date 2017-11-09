@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RestaurantePractica</string>
+    <string name="mesas_button">Mesas</string>
 </resources>
