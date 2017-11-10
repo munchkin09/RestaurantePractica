@@ -3,6 +3,7 @@ package es.carlosdevops.clc.restaurantepractica.activity
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import es.carlosdevops.clc.restaurantepractica.BASE_URL
 import es.carlosdevops.clc.restaurantepractica.R
 import es.carlosdevops.clc.restaurantepractica.model.Dish
@@ -15,7 +16,7 @@ import org.json.JSONObject
 import java.net.URL
 import java.util.*
 
-class InitialActivity : AppCompatActivity() {
+class InitialActivity : AppCompatActivity(), View.OnClickListener {
 
     /*
      * En esta actividad tengo pensado hacer la descarga de datos
@@ -27,8 +28,8 @@ class InitialActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_initial)
+        btn_tables.setOnClickListener(this)
 
-        btn_tables.isEnabled = false
         downloadMenu()
     }
 
@@ -81,4 +82,11 @@ class InitialActivity : AppCompatActivity() {
         return null
 
     }
+
+    override fun onClick(p0: View?) {
+        if (p0 == btn_tables) {
+            startActivity(TablesActivity.intent(this))
+        }
+    }
+
 }

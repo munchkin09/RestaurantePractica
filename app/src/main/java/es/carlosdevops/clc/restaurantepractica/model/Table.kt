@@ -1,22 +1,14 @@
 package es.carlosdevops.clc.restaurantepractica.model
 
+import java.io.Serializable
+
 data class Table(val table: String,
-                 var dishes: Array<Dish>) {
+                 var dishes: List<Dish>?) : Serializable {
 
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+    constructor(table: String) : this(table,null)
 
-        other as Table
-
-        if (table != other.table) return false
-
-        return true
+    override fun toString(): String {
+        return table
     }
-
-    override fun hashCode(): Int {
-        return table.hashCode()
-    }
-
 }
