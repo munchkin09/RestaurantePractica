@@ -1,14 +1,12 @@
 package es.carlosdevops.clc.restaurantepractica.fragment
 
+import android.app.Activity
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
+import android.app.Fragment
+import android.view.*
 import es.carlosdevops.clc.restaurantepractica.R
+
 
 /**
  * A simple [Fragment] subclass.
@@ -21,7 +19,7 @@ import es.carlosdevops.clc.restaurantepractica.R
 class TableDetailFragment : Fragment() {
 
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
+
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val TABLE_POSITION = "TABLE_POSITION"
 
@@ -29,10 +27,9 @@ class TableDetailFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param position Parameter 1.
+         * @param position The table clicked on TablesListFragment.
          * @return A new instance of fragment TableDetailFragment.
          */
-        // TODO: Rename and change types and number of parameters
         fun newInstance(position: Int): TableDetailFragment {
             val fragment = TableDetailFragment()
             val args = Bundle()
@@ -42,7 +39,6 @@ class TableDetailFragment : Fragment() {
         }
     }
 
-    // TODO: Rename and change types of parameters
     private var table_position: Int? = null
 
 
@@ -54,11 +50,15 @@ class TableDetailFragment : Fragment() {
             table_position = arguments.getInt(TABLE_POSITION)
 
         }
+        setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+
+
         return inflater!!.inflate(R.layout.fragment_table_detail, container, false)
     }
 
@@ -71,6 +71,16 @@ class TableDetailFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        commonAttach(context)
+    }
+
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        commonAttach(activity)
+
+    }
+
+    fun commonAttach(context: Any?) {
         if (context is OnAddDishClickListener) {
             mListener = context
         }
@@ -79,6 +89,16 @@ class TableDetailFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         mListener = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.table_options,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        return super.onOptionsItemSelected(item)
     }
 
     /**
@@ -94,6 +114,4 @@ class TableDetailFragment : Fragment() {
         // TODO: Update argument type and name
         fun onAddDishClick()
     }
-
-
-}// Required empty public constructor
+}

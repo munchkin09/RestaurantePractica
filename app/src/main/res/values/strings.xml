@@ -4,4 +4,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_calculate_bill">Calcular cuenta</string>
+    <string name="sab_tables">Mesas</string>
+    <string name="str_new_dish">Añadir nuevo plato</string>
 </resources>

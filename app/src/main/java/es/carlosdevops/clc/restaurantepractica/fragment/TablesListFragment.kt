@@ -33,6 +33,7 @@ class TablesListFragment : Fragment() {
             root = inflater.inflate(R.layout.fragment_list_tables,container,false)
             val tables_list = root.findViewById<ListView>(R.id.tables_list)
             if(tables_list != null) {
+                Tables.initTables()
                 tables_list.adapter = ArrayAdapter<Table>(activity, android.R.layout.simple_list_item_1, Tables.toArray())
                 tables_list.setOnItemClickListener { _, _, i, _ ->
                     onTableSelectedListener?.onTableSelected(Tables.get(i),i)

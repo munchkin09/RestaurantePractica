@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/btn_add_new_dish"
+        android:title="@string/str_new_dish" />
+    <item android:id="@+id/btn_calculate_bill"
+        android:title="@string/str_calculate_bill"/>
+</menu>

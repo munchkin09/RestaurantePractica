@@ -1,8 +1,12 @@
 package es.carlosdevops.clc.restaurantepractica.model
 
-import java.io.Serializable
+object Dishes {
 
-class Dishes(menu: List<Dish>?) : Serializable {
+    private var dishes = mutableListOf<Dish>()
 
+
+    fun setMenu( menu: List<Dish>) {
+        dishes.addAll(menu)
+    }
 
 }

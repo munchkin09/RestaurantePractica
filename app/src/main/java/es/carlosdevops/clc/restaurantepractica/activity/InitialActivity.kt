@@ -2,11 +2,11 @@ package es.carlosdevops.clc.restaurantepractica.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import es.carlosdevops.clc.restaurantepractica.BASE_URL
 import es.carlosdevops.clc.restaurantepractica.R
 import es.carlosdevops.clc.restaurantepractica.model.Dish
+import es.carlosdevops.clc.restaurantepractica.model.Dishes
 import kotlinx.android.synthetic.main.activity_initial.*
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
@@ -43,7 +43,7 @@ class InitialActivity : AppCompatActivity(), View.OnClickListener {
             menuDownloaded = newDataset.await()
             if (menuDownloaded != null) {
                 btn_tables.isEnabled = true
-                Log.v("JSON",menuDownloaded.toString())
+                Dishes.setMenu(menuDownloaded!!)
             }
 
         }
