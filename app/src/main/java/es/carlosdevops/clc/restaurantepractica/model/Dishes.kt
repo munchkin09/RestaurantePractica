@@ -9,4 +9,5 @@ object Dishes {
         dishes.addAll(menu)
     }
 
+    fun toArray() = dishes.toTypedArray()
 }

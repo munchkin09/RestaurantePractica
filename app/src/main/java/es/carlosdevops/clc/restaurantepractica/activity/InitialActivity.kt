@@ -85,7 +85,7 @@ class InitialActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         if (p0 == btn_tables) {
-            startActivity(TablesActivity.intent(this))
+            startActivity(TablesActivity.intent(this,null,null))
         }
     }
 

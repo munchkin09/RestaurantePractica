@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.TablesActivity" />
+        <activity android:name=".activity.DishesActivity"></activity>
     </application>
 
 </manifest>

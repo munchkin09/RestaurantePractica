@@ -74,6 +74,7 @@ class TableDetailFragment : Fragment() {
         commonAttach(context)
     }
 
+    @Suppress("OverridingDeprecatedMember","DEPRECATION")
     override fun onAttach(activity: Activity?) {
         super.onAttach(activity)
         commonAttach(activity)
@@ -98,6 +99,15 @@ class TableDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
+        if (item != null) {
+            if (item.itemId == R.id.btn_add_new_dish) {
+                this.onButtonPressed()
+
+            } else if (item.itemId == R.id.btn_calculate_bill) {
+
+            }
+            return true
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -111,7 +121,7 @@ class TableDetailFragment : Fragment() {
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
     interface OnAddDishClickListener {
-        // TODO: Update argument type and name
+
         fun onAddDishClick()
     }
 }
