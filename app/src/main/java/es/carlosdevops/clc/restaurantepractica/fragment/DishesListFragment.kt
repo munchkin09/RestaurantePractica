@@ -1,5 +1,6 @@
 package es.carlosdevops.clc.restaurantepractica.fragment
 
+import android.app.Activity
 import android.app.Fragment
 import android.content.Context
 import android.net.Uri
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_list_tables.*
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [DishesListFragment.OnFragmentInteractionListener] interface
+ * [DishesListFragment.OnDishMenuSelectedListener] interface
  * to handle interaction events.
  * Use the [DishesListFragment.newInstance] factory method to
  * create an instance of this fragment.
@@ -27,43 +28,16 @@ class DishesListFragment : Fragment() {
 
 
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
-        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-        private val ARG_PARAM1 = "param1"
-        private val ARG_PARAM2 = "param2"
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DishesListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String, param2: String): DishesListFragment {
-            val fragment = DishesListFragment()
-            val args = Bundle()
-            args.putString(ARG_PARAM1, param1)
-            args.putString(ARG_PARAM2, param2)
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance() = DishesListFragment()
     }
 
-    // TODO: Rename and change types of parameters
-    private var mParam1: String? = null
-    private var mParam2: String? = null
-
-    private var mListener: OnFragmentInteractionListener? = null
+    private var mListener: OnDishMenuSelectedListener? = null
     lateinit var root : View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            mParam1 = arguments.getString(ARG_PARAM1)
-            mParam2 = arguments.getString(ARG_PARAM2)
-        }
+
     }
 
 
@@ -77,26 +51,34 @@ class DishesListFragment : Fragment() {
             if (dishesList != null) {
                 dishesList.adapter = ArrayAdapter<Dish>(activity, android.R.layout.simple_list_item_1, Dishes.toArray())
                 dishesList.setOnItemClickListener { _, _, i, _ ->
-                    onButtonPressed()
+                    onButtonPressed(i)
                 }
             }
         }
         return root
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed() {
+    
+    fun onButtonPressed(position: Int) {
         if (mListener != null) {
-            mListener!!.onFragmentInteraction()
+            mListener!!.onDishMenuSelectedInteraction(position)
         }
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
+        commonAttach(context)
+    }
+
+
+    @Suppress("OverridingDeprecatedMember","DEPRECATION")
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        commonAttach(activity)
+    }
+
+    private fun commonAttach(context: Any?) {
+        if (context is OnDishMenuSelectedListener) {
             mListener = context
-        } else {
-            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
         }
     }
 
@@ -114,9 +96,9 @@ class DishesListFragment : Fragment() {
      *
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
-    interface OnFragmentInteractionListener {
+    interface OnDishMenuSelectedListener {
 
-        fun onFragmentInteraction()
+        fun onDishMenuSelectedInteraction(position: Int)
     }
 
 

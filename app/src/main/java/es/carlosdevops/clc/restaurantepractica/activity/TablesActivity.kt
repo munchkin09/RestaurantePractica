@@ -21,38 +21,53 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
         val ARG_DISH = "DISH"
         val ARG_TABLE = "TABLE"
 
-        fun intent (context: Context, dish: Dish?, table: Int?): Intent {
-            val intent = Intent(context,TablesActivity::class.java)
+        fun intent(context: Context, dish: Dish?, table: Int?): Intent {
+            val intent = Intent(context, TablesActivity::class.java)
             if (dish != null) {
                 intent.putExtra(ARG_DISH, dish)
             }
             if (table != null) {
                 intent.putExtra(ARG_TABLE, table)
+                FRAGMENT_SELECTED = "DETAIL"
             }
             return intent
 
         }
+
+        var FRAGMENT_SELECTED = "LIST"
     }
 
 
-    var fragmentTableList : Fragment? = null
+    var fragmentTableList: Fragment? = null
     var fragmentTableDetail: Fragment? = null
 
-    var tableId : Int? = null
+    var tableId: Int? = null
+    var dish: Dish? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tables)
-        tableId = intent?.getIntExtra(ARG_TABLE,0)
-        if(tables_list_fragment != null) {
+        if (TablesActivity.FRAGMENT_SELECTED == "LIST") {
+            if (tables_list_fragment != null) {
 
-             fragmentTableList = TablesListFragment.newInstance()
+                fragmentTableList = TablesListFragment.newInstance()
+                fragmentManager.beginTransaction()
+                        .add(R.id.tables_list_fragment, fragmentTableList)
+                        .commit()
+                supportActionBar?.title = getString(R.string.sab_tables)
+
+            }
+        } else {
+            tableId = intent?.getIntExtra(ARG_TABLE, 0)
+            dish = intent?.getSerializableExtra(ARG_DISH) as? Dish
+
+            fragmentTableDetail = TableDetailFragment.newInstance(tableId!!)
             fragmentManager.beginTransaction()
-                    .add(R.id.tables_list_fragment,fragmentTableList)
+                    .replace(R.id.tables_list_fragment,fragmentTableDetail)
+                    .addToBackStack("")
                     .commit()
-            supportActionBar?.title = getString(R.string.sab_tables)
-
+            supportActionBar?.title = Tables.getTableName(tableId!!)
         }
     }
 
@@ -61,6 +76,7 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
        fragmentTableDetail = TableDetailFragment.newInstance(position)
         fragmentManager.beginTransaction()
                 .replace(R.id.tables_list_fragment,fragmentTableDetail)
+                .addToBackStack("")
                 .commit()
         supportActionBar?.title = Tables.getTableName(position)
         tableId = position
@@ -73,20 +89,20 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
         startActivity(intent)
     }
 
-    override fun onBackPressed() {
+ /*   override fun onBackPressed() {
 
-        //super.onBackPressed()
+        super.onBackPressed()
 //        Log.v("BACK_BUTTON","Paso hacia atrás")
 //        if(fragmentManager.equals(fragmentTableList) == false) {
 //
-        fragmentManager.beginTransaction()
-                .remove(fragmentTableDetail)
-                .replace(R.id.tables_list_fragment, fragmentTableList)
-                .commit()
-        supportActionBar?.title = getString(R.string.sab_tables)
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.tables_list_fragment, fragmentTableList)
+//                .addToBackStack("")
+//                .commit()
+//        supportActionBar?.title = getString(R.string.sab_tables)
 //
 //        } else {
 //            super.onBackPressed()
 //        }
-    }
+    }*/
 }

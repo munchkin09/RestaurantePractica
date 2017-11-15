@@ -13,7 +13,8 @@ data class Dish(var name: String,
                 var prize: Float,
                 var allergens: List<ALLERGENS>?,
                 var text: String,
-                var image: URL  ): Serializable {
+                var image: URL,
+                var side_note: String? ): Serializable {
 
     companion object {
 
@@ -54,7 +55,6 @@ data class Dish(var name: String,
         }
     }
 
-    override fun toString(): String {
-        return this.name
-    }
+    override fun toString() = this.name
+
 }

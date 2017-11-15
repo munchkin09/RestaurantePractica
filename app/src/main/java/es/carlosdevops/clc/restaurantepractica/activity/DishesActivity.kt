@@ -5,9 +5,12 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import es.carlosdevops.clc.restaurantepractica.R
+import es.carlosdevops.clc.restaurantepractica.fragment.DishDetailFragment
 import es.carlosdevops.clc.restaurantepractica.fragment.DishesListFragment
+import es.carlosdevops.clc.restaurantepractica.model.Dish
+import es.carlosdevops.clc.restaurantepractica.model.Tables
 
-class DishesActivity : AppCompatActivity(), DishesListFragment.OnFragmentInteractionListener {
+class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelectedListener, DishDetailFragment.OnDishSelectedToAddListener {
 
     companion object {
         val ARG_DISH = "DISH"
@@ -29,14 +32,28 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnFragmentInterac
 
         tableId = intent.getIntExtra(ARG_TABLE,0)
         if(fragmentManager.findFragmentById(R.id.dishes_list_fragment) == null) {
-            val fragment = DishesListFragment.newInstance("","")
+            val fragment = DishesListFragment.newInstance()
             fragmentManager.beginTransaction()
                     .add(R.id.dishes_list_fragment,fragment)
                     .commit()
         }
     }
 
-    override fun onFragmentInteraction() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onDishMenuSelectedInteraction(position: Int) {
+        //Tenemos que cargar el nuevo fragment del detalle del plato
+        val fragment = DishDetailFragment.newInstance(position)
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.dishes_list_fragment,fragment)
+                .addToBackStack("")
+                .commit()
+
+
+    }
+
+    override fun onDishSelectedToAdd(dish: Dish) {
+        Tables.get(tableId!!).dishes?.add(dish)
+        val intent = TablesActivity.intent(this,dish,tableId)
+        startActivity(intent)
     }
 }

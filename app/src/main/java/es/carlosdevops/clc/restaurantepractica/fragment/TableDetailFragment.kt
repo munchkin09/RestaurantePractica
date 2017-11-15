@@ -5,7 +5,11 @@ import android.content.Context
 import android.os.Bundle
 import android.app.Fragment
 import android.view.*
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import es.carlosdevops.clc.restaurantepractica.R
+import es.carlosdevops.clc.restaurantepractica.model.Dish
+import es.carlosdevops.clc.restaurantepractica.model.Tables
 
 
 /**
@@ -43,6 +47,7 @@ class TableDetailFragment : Fragment() {
 
 
     private var mListener: OnAddDishClickListener? = null
+    var root: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +61,16 @@ class TableDetailFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+        if (inflater != null) {
+            // Inflate the layout for this fragment
+            root = inflater.inflate(R.layout.fragment_table_detail, container, false)
+            val dish_list_per_table = root?.findViewById<ListView>(R.id.list_dishes_per_table)
+            if (dish_list_per_table != null) {
+                dish_list_per_table.adapter = ArrayAdapter<Dish>(activity,android.R.layout.simple_list_item_1, Tables.get(table_position!!).dishes?.toTypedArray())
 
-
-        return inflater!!.inflate(R.layout.fragment_table_detail, container, false)
+            }
+        }
+        return root
     }
 
     // TODO: Rename method, update argument and hook method into UI event

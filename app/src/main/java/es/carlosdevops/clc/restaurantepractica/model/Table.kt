@@ -3,7 +3,7 @@ package es.carlosdevops.clc.restaurantepractica.model
 import java.io.Serializable
 
 data class Table(val table: String,
-                 var dishes: List<Dish>?) : Serializable {
+                 var dishes: MutableList<Dish>?) : Serializable {
 
 
     constructor(table: String) : this(table,null)
@@ -11,4 +11,5 @@ data class Table(val table: String,
     override fun toString(): String {
         return table
     }
+
 }

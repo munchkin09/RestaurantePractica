@@ -16,7 +16,7 @@ object Tables {
         Log.v("MESAS", count.toString())
         if (this.count  == 0) {
             for (table in 0 until intTables) {
-                this.tables.add(table, Table("Mesa ${table+1}"))
+                this.tables.add(table, Table("Mesa ${table+1}", mutableListOf()))
             }
         }
 

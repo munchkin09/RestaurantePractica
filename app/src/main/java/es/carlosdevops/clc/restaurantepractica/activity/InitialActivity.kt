@@ -51,7 +51,7 @@ class InitialActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getJSONData(): List<Dish>? {
-        var menu = mutableListOf<Dish>()
+        val menu = mutableListOf<Dish>()
 
         val url = URL(BASE_URL)
         try {
@@ -72,7 +72,7 @@ class InitialActivity : AppCompatActivity(), View.OnClickListener {
                     Dish.getAllergenFromString(allergens.getString(it))
                 }
 
-                menu.add(Dish(name,prize,allergensList,description,image))
+                menu.add(Dish(name,prize,allergensList,description,image,""))
             }
             return menu
         }catch (ex: Exception) {
