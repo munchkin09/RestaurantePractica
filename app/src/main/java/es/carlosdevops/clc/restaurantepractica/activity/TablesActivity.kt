@@ -28,13 +28,20 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
             }
             if (table != null) {
                 intent.putExtra(ARG_TABLE, table)
-                FRAGMENT_SELECTED = "DETAIL"
+                isFRAGMENT_SELECTED = FRAGMENT_SELECTED.DETAIL
+            } else {
+                isFRAGMENT_SELECTED = FRAGMENT_SELECTED.LIST
             }
             return intent
 
         }
 
-        var FRAGMENT_SELECTED = "LIST"
+        var isFRAGMENT_SELECTED = Companion.FRAGMENT_SELECTED.LIST
+
+        enum class FRAGMENT_SELECTED {
+            LIST,
+            DETAIL
+        }
     }
 
 
@@ -48,7 +55,7 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tables)
-        if (TablesActivity.FRAGMENT_SELECTED == "LIST") {
+        if (TablesActivity.isFRAGMENT_SELECTED == FRAGMENT_SELECTED.LIST) {
             if (tables_list_fragment != null) {
 
                 fragmentTableList = TablesListFragment.newInstance()
@@ -65,7 +72,6 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
             fragmentTableDetail = TableDetailFragment.newInstance(tableId!!)
             fragmentManager.beginTransaction()
                     .replace(R.id.tables_list_fragment,fragmentTableDetail)
-                    .addToBackStack("")
                     .commit()
             supportActionBar?.title = Tables.getTableName(tableId!!)
         }
@@ -76,7 +82,7 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
        fragmentTableDetail = TableDetailFragment.newInstance(position)
         fragmentManager.beginTransaction()
                 .replace(R.id.tables_list_fragment,fragmentTableDetail)
-                .addToBackStack("")
+                .addToBackStack(null)
                 .commit()
         supportActionBar?.title = Tables.getTableName(position)
         tableId = position

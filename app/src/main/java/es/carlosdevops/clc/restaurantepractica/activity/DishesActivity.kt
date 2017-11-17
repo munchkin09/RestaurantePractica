@@ -40,12 +40,11 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
     }
 
     override fun onDishMenuSelectedInteraction(position: Int) {
-        //Tenemos que cargar el nuevo fragment del detalle del plato
+
         val fragment = DishDetailFragment.newInstance(position)
 
         fragmentManager.beginTransaction()
                 .replace(R.id.dishes_list_fragment,fragment)
-                .addToBackStack("")
                 .commit()
 
 
