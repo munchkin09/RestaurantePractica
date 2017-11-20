@@ -18,17 +18,25 @@ data class Dish(var name: String,
 
     companion object {
 
-        fun getAllergenFromString(str:String): ALLERGENS {
+        fun getAllergenFromString(str: String) = when (str) {
+            "Paprika" -> ALLERGENS.PAPRIKA
+            "Meat" -> ALLERGENS.MEAT
+            "Fish" -> ALLERGENS.FISH
+            "Onion" -> ALLERGENS.ONION
+            "Sesame" -> ALLERGENS.SESAME
+            "Milk" -> ALLERGENS.MILK
+            else -> ALLERGENS.NONE
 
-           return when(str) {
-                "Paprika" -> ALLERGENS.PAPRIKA
-                "Meat"    -> ALLERGENS.MEAT
-                "Fish"    -> ALLERGENS.FISH
-                "Onion"   -> ALLERGENS.ONION
-                "Sesame"  -> ALLERGENS.SESAME
-                "Milk"    -> ALLERGENS.MILK
-                else      -> ALLERGENS.NONE
-            }
+        }
+
+        fun getResourceFromAllergen(allergen: ALLERGENS) = when (allergen) {
+                ALLERGENS.PAPRIKA -> R.drawable.ic_allergen_paprika
+                ALLERGENS.MEAT -> R.drawable.ic_allergen_meat
+                ALLERGENS.FISH -> R.drawable.ic_allergen_fish
+                ALLERGENS.ONION -> R.drawable.ic_allergen_onion
+                ALLERGENS.SESAME -> R.drawable.ic_allergen_sesame
+                ALLERGENS.MILK -> R.drawable.ic_allergen_milk
+                ALLERGENS.NONE -> android.R.drawable.ic_menu_info_details
         }
 
     }
@@ -41,18 +49,6 @@ data class Dish(var name: String,
         SESAME,
         MILK,
         NONE
-    }
-
-    fun getResourceFromAllergen(allergen: ALLERGENS): Int {
-        return when(allergen) {
-            ALLERGENS.PAPRIKA -> R.drawable.ic_allergen_paprika
-            ALLERGENS.MEAT    -> R.drawable.ic_allergen_meat
-            ALLERGENS.FISH    -> R.drawable.ic_allergen_fish
-            ALLERGENS.ONION   -> R.drawable.ic_allergen_onion
-            ALLERGENS.SESAME  -> R.drawable.ic_allergen_sesame
-            ALLERGENS.MILK    -> R.drawable.ic_allergen_milk
-            ALLERGENS.NONE    -> android.R.drawable.ic_menu_info_details
-        }
     }
 
     override fun toString() = this.name

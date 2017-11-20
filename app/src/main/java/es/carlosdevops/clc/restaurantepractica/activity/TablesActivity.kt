@@ -82,7 +82,6 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
        fragmentTableDetail = TableDetailFragment.newInstance(position)
         fragmentManager.beginTransaction()
                 .replace(R.id.tables_list_fragment,fragmentTableDetail)
-                .addToBackStack(null)
                 .commit()
         supportActionBar?.title = Tables.getTableName(position)
         tableId = position
@@ -92,6 +91,9 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
     override fun onAddDishClick() {
 
         val intent = DishesActivity.intent(this,tableId!!)
+        fragmentManager.beginTransaction()
+                .remove(fragmentTableDetail)
+                .commit()
         startActivity(intent)
     }
 

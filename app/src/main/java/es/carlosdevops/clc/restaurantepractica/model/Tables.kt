@@ -20,11 +20,8 @@ object Tables {
 
     fun toArray() = tables.toTypedArray()
 
-    fun getTableName(position: Int): String {
-        return tables[position].table
-    }
+    fun getTableName(position: Int) = tables[position].table
 
-    fun getTable(position: Int) : Table {
-        return tables[position]
-    }
+    fun getTable(position: Int) = tables[position]
+
 }

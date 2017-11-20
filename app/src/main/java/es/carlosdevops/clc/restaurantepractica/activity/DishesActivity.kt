@@ -1,5 +1,6 @@
 package es.carlosdevops.clc.restaurantepractica.activity
 
+import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -25,6 +26,7 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
     }
 
     var tableId : Int? = null
+    var fragmentDishesList : Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +34,9 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
 
         tableId = intent.getIntExtra(ARG_TABLE,0)
         if(fragmentManager.findFragmentById(R.id.dishes_list_fragment) == null) {
-            val fragment = DishesListFragment.newInstance()
+            fragmentDishesList = DishesListFragment.newInstance()
             fragmentManager.beginTransaction()
-                    .add(R.id.dishes_list_fragment,fragment)
+                    .add(R.id.dishes_list_fragment,fragmentDishesList)
                     .commit()
         }
     }
@@ -44,7 +46,8 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
         val fragment = DishDetailFragment.newInstance(position)
 
         fragmentManager.beginTransaction()
-                .replace(R.id.dishes_list_fragment,fragment)
+                .remove(fragmentDishesList)
+                .add(R.id.dishes_list_fragment,fragment)
                 .commit()
 
 
