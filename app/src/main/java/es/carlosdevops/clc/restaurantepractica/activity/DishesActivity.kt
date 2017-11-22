@@ -1,5 +1,6 @@
 package es.carlosdevops.clc.restaurantepractica.activity
 
+import android.app.Activity
 import android.app.Fragment
 import android.content.Context
 import android.content.Intent
@@ -54,8 +55,19 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
     }
 
     override fun onDishSelectedToAdd(dish: Dish) {
-        Tables.get(tableId!!).dishes?.add(dish)
-        val intent = TablesActivity.intent(this,dish,tableId)
-        startActivity(intent)
+
+        val intent = Intent()
+        intent.putExtra(ARG_TABLE,tableId!!)
+        intent.putExtra(ARG_DISH,dish)
+        setResult(Activity.RESULT_OK,intent)
+        finish()
+    }
+
+    override fun onCancelSelected() {
+
+        val intent = Intent()
+        intent.putExtra(ARG_TABLE,tableId!!)
+        setResult(Activity.RESULT_CANCELED,intent)
+        finish()
     }
 }

@@ -44,7 +44,7 @@ class TableDetailFragment : Fragment() {
         }
     }
 
-    private var tablePosition: Int? = null
+    private var tableId: Int? = null
 
 
     private var mListener: OnAddDishClickListener? = null
@@ -53,7 +53,7 @@ class TableDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            tablePosition = arguments.getInt(TABLE_POSITION)
+            tableId = arguments.getInt(TABLE_POSITION)
 
         }
         setHasOptionsMenu(true)
@@ -67,7 +67,7 @@ class TableDetailFragment : Fragment() {
             root = inflater.inflate(R.layout.fragment_table_detail, container, false)
             val dish_list_per_table = root?.findViewById<ListView>(R.id.list_dishes_per_table)
             if (dish_list_per_table != null) {
-                dish_list_per_table.adapter = ArrayAdapter<Dish>(activity,android.R.layout.simple_list_item_1, Tables.get(tablePosition!!).dishes?.toTypedArray())
+                dish_list_per_table.adapter = ArrayAdapter<Dish>(activity,android.R.layout.simple_list_item_1, Tables.get(tableId!!).dishes?.toTypedArray())
 
             }
         }
@@ -116,7 +116,7 @@ class TableDetailFragment : Fragment() {
                 this.onButtonPressed()
 
             } else if (item.itemId == R.id.btn_calculate_bill) {
-                val bill = Tables.getTable(tablePosition!!).calculateBill()
+                val bill = Tables.getTable(tableId!!).calculateBill()
                 val simpleAlert = AlertDialog.Builder(activity).create()
 
                 simpleAlert.setTitle("La cuenta")

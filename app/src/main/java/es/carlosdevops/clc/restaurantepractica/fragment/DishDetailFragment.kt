@@ -80,7 +80,7 @@ class DishDetailFragment : Fragment() {
         view?.findViewById<ImageView>(R.id.imgv_dish)?.loadImage(dish.image)
         view?.findViewById<TextView>(R.id.txt_dish_description)?.text = dish.text
         view?.findViewById<Button>(R.id.btn_add_dish)?.setOnClickListener {
-            onButtonPressed()
+            onButtonAddPressed()
         }
         val llAllergens = view?.findViewById<LinearLayout>(R.id.ll_allergens)
         val textView = TextView(activity)
@@ -93,12 +93,20 @@ class DishDetailFragment : Fragment() {
             llAllergens?.addView(imageView)
         }
 
-        view?.findViewById<Button>(R.id.btn_cancel)?.setOnClickListener {  }
+        view?.findViewById<Button>(R.id.btn_cancel)?.setOnClickListener {
+            onButtonCancelPressed()
+        }
 
 
     }
 
-    private fun onButtonPressed() {
+    private fun onButtonCancelPressed() {
+        if (mListener != null) {
+            mListener!!.onCancelSelected()
+        }
+    }
+
+    private fun onButtonAddPressed() {
         if (mListener != null) {
 
             dish.side_note = view?.findViewById<EditText>(R.id.txt_side_note)?.text.toString()
@@ -142,6 +150,8 @@ class DishDetailFragment : Fragment() {
     interface OnDishSelectedToAddListener {
 
         fun onDishSelectedToAdd(dish: Dish)
+
+        fun onCancelSelected()
     }
 
 

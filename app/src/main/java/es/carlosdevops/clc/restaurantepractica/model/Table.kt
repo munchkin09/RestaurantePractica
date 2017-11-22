@@ -21,8 +21,6 @@ data class Table(val table: String,
         return totalBill
     }
 
-    override fun toString(): String {
-        return table
-    }
+    override fun toString() = table
 
 }
