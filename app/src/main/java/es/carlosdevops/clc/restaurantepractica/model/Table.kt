@@ -8,8 +8,19 @@ data class Table(val table: String,
 
     constructor(table: String) : this(table,null)
 
-    override fun toString(): String {
-        return table
+    fun calculateBill() : Float {
+
+        var totalBill = 0f
+        if (dishes != null) {
+
+            dishes?.forEach { dish ->
+                totalBill += dish.prize
+            }
+        }
+
+        return totalBill
     }
+
+    override fun toString() = table
 
 }

@@ -7,4 +7,8 @@
     <string name="str_calculate_bill">Calcular cuenta</string>
     <string name="sab_tables">Mesas</string>
     <string name="str_new_dish">Añadir nuevo plato</string>
+    <string name="txt_allergens">Alérgenos</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="placeholder">placeholder</string>
+    <string name="imgv_dish_content_description">Imagen plato de comida</string>
 </resources>

@@ -8,10 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 
 import es.carlosdevops.clc.restaurantepractica.extensions.loadImage
 import es.carlosdevops.clc.restaurantepractica.R
@@ -23,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_dish_detail.*
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [DishDetailFragment.OnFragmentInteractionListener] interface
+ * [DishDetailFragment.OnDishSelectedToAddListener] interface
  * to handle interaction events.
  * Use the [DishDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
@@ -31,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_dish_detail.*
 class DishDetailFragment : Fragment() {
 
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
+
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private val DISH_POSITION = "DISH_POSITION"
 
@@ -52,7 +49,6 @@ class DishDetailFragment : Fragment() {
         }
     }
 
-    // TODO: Rename and change types of parameters
 
     var root : View? = null
     private var dish_position: Int? = null
@@ -79,20 +75,38 @@ class DishDetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         view?.findViewById<ImageView>(R.id.imgv_dish)?.loadImage(dish.image)
         view?.findViewById<TextView>(R.id.txt_dish_description)?.text = dish.text
         view?.findViewById<Button>(R.id.btn_add_dish)?.setOnClickListener {
-            onButtonPressed()
+            onButtonAddPressed()
+        }
+        val llAllergens = view?.findViewById<LinearLayout>(R.id.ll_allergens)
+        val textView = TextView(activity)
+        textView.text = getString(R.string.txt_allergens)
+        llAllergens?.addView(textView)
+
+        dish.allergens?.forEach { allergen ->
+            val imageView = ImageView(activity)
+            imageView.setImageResource(Dish.getResourceFromAllergen(allergen))
+            llAllergens?.addView(imageView)
         }
 
-        view?.findViewById<Button>(R.id.btn_cancel)?.setOnClickListener {  }
+        view?.findViewById<Button>(R.id.btn_cancel)?.setOnClickListener {
+            onButtonCancelPressed()
+        }
 
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed() {
+    private fun onButtonCancelPressed() {
+        if (mListener != null) {
+            mListener!!.onCancelSelected()
+        }
+    }
+
+    private fun onButtonAddPressed() {
         if (mListener != null) {
 
             dish.side_note = view?.findViewById<EditText>(R.id.txt_side_note)?.text.toString()
@@ -134,8 +148,10 @@ class DishDetailFragment : Fragment() {
      * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
      */
     interface OnDishSelectedToAddListener {
-        // TODO: Update argument type and name
+
         fun onDishSelectedToAdd(dish: Dish)
+
+        fun onCancelSelected()
     }
 
 

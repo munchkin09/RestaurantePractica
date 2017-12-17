@@ -1,5 +1,7 @@
 package es.carlosdevops.clc.restaurantepractica.activity
 
+import android.app.Activity
+import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -20,11 +22,11 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
             val intent = Intent(context,DishesActivity::class.java)
             intent.putExtra(ARG_TABLE,table)
             return intent
-
         }
     }
 
     var tableId : Int? = null
+    var fragmentDishesList : Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,28 +34,46 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
 
         tableId = intent.getIntExtra(ARG_TABLE,0)
         if(fragmentManager.findFragmentById(R.id.dishes_list_fragment) == null) {
-            val fragment = DishesListFragment.newInstance()
+            fragmentDishesList = DishesListFragment.newInstance()
             fragmentManager.beginTransaction()
-                    .add(R.id.dishes_list_fragment,fragment)
+                    .add(R.id.dishes_list_fragment,fragmentDishesList)
                     .commit()
         }
     }
 
     override fun onDishMenuSelectedInteraction(position: Int) {
-        //Tenemos que cargar el nuevo fragment del detalle del plato
+
         val fragment = DishDetailFragment.newInstance(position)
 
         fragmentManager.beginTransaction()
-                .replace(R.id.dishes_list_fragment,fragment)
-                .addToBackStack("")
+                .remove(fragmentDishesList)
+                .add(R.id.dishes_list_fragment,fragment)
                 .commit()
 
 
     }
 
     override fun onDishSelectedToAdd(dish: Dish) {
-        Tables.get(tableId!!).dishes?.add(dish)
-        val intent = TablesActivity.intent(this,dish,tableId)
-        startActivity(intent)
+
+        val intent = Intent()
+        intent.putExtra(ARG_TABLE,tableId!!)
+        intent.putExtra(ARG_DISH,dish)
+        setResult(Activity.RESULT_OK,intent)
+        finish()
+    }
+
+    override fun onCancelSelected() {
+        commonOnCancel()
+    }
+
+    override fun onBackPressed() {
+        commonOnCancel()    
+    }
+
+    private fun commonOnCancel() {
+        val intent = Intent()
+        intent.putExtra(ARG_TABLE,tableId!!)
+        setResult(Activity.RESULT_CANCELED,intent)
+        finish()
     }
 }

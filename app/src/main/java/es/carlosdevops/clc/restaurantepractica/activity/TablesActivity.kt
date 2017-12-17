@@ -1,5 +1,6 @@
 package es.carlosdevops.clc.restaurantepractica.activity
 
+import android.app.Activity
 import android.app.Fragment
 import android.content.Context
 import android.content.Intent
@@ -18,37 +19,38 @@ import kotlinx.android.synthetic.main.activity_tables.*
 class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedListener,TableDetailFragment.OnAddDishClickListener {
 
     companion object {
-        val ARG_DISH = "DISH"
-        val ARG_TABLE = "TABLE"
 
-        fun intent(context: Context, dish: Dish?, table: Int?): Intent {
+        val FOR_RESULT_DISHES = 1
+
+        fun intent(context: Context): Intent {
             val intent = Intent(context, TablesActivity::class.java)
-            if (dish != null) {
-                intent.putExtra(ARG_DISH, dish)
-            }
-            if (table != null) {
-                intent.putExtra(ARG_TABLE, table)
-                FRAGMENT_SELECTED = "DETAIL"
-            }
+
+            isFRAGMENT_SELECTED = FRAGMENTSELECTED.LIST
+
             return intent
 
         }
 
-        var FRAGMENT_SELECTED = "LIST"
+        var isFRAGMENT_SELECTED = Companion.FRAGMENTSELECTED.LIST
+
+        enum class FRAGMENTSELECTED {
+            LIST,
+            DETAIL
+        }
     }
 
 
-    var fragmentTableList: Fragment? = null
-    var fragmentTableDetail: Fragment? = null
+    private var fragmentTableList: Fragment? = null
+    private var fragmentTableDetail: Fragment? = null
 
-    var tableId: Int? = null
+    private var tableId: Int? = null
     var dish: Dish? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tables)
-        if (TablesActivity.FRAGMENT_SELECTED == "LIST") {
+        if (TablesActivity.isFRAGMENT_SELECTED == FRAGMENTSELECTED.LIST) {
             if (tables_list_fragment != null) {
 
                 fragmentTableList = TablesListFragment.newInstance()
@@ -59,13 +61,9 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
 
             }
         } else {
-            tableId = intent?.getIntExtra(ARG_TABLE, 0)
-            dish = intent?.getSerializableExtra(ARG_DISH) as? Dish
-
             fragmentTableDetail = TableDetailFragment.newInstance(tableId!!)
             fragmentManager.beginTransaction()
                     .replace(R.id.tables_list_fragment,fragmentTableDetail)
-                    .addToBackStack("")
                     .commit()
             supportActionBar?.title = Tables.getTableName(tableId!!)
         }
@@ -76,7 +74,6 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
        fragmentTableDetail = TableDetailFragment.newInstance(position)
         fragmentManager.beginTransaction()
                 .replace(R.id.tables_list_fragment,fragmentTableDetail)
-                .addToBackStack("")
                 .commit()
         supportActionBar?.title = Tables.getTableName(position)
         tableId = position
@@ -86,23 +83,35 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
     override fun onAddDishClick() {
 
         val intent = DishesActivity.intent(this,tableId!!)
-        startActivity(intent)
+        fragmentManager.beginTransaction()
+                .remove(fragmentTableDetail)
+                .commit()
+        startActivityForResult(intent, FOR_RESULT_DISHES)
     }
 
- /*   override fun onBackPressed() {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //super.onActivityResult(requestCode, resultCode, data)
 
-        super.onBackPressed()
-//        Log.v("BACK_BUTTON","Paso hacia atrás")
-//        if(fragmentManager.equals(fragmentTableList) == false) {
-//
-//        fragmentManager.beginTransaction()
-//                .replace(R.id.tables_list_fragment, fragmentTableList)
-//                .addToBackStack("")
-//                .commit()
-//        supportActionBar?.title = getString(R.string.sab_tables)
-//
-//        } else {
-//            super.onBackPressed()
-//        }
-    }*/
+        // Este if no sería necesario ya que no podemos volver de más de una activity a esta activity
+        if (requestCode == FOR_RESULT_DISHES) {
+
+            if (resultCode == Activity.RESULT_OK) {
+
+                //Aquí tenemos que recoger la mesa y el plato seleccionados del activityDishes
+                val dish = data?.getSerializableExtra(DishesActivity.ARG_DISH) as Dish
+                tableId = data?.getIntExtra(DishesActivity.ARG_TABLE,0)
+                Tables[tableId!!].dishes?.add(dish)
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+
+                tableId = data?.getIntExtra(DishesActivity.ARG_TABLE,0)
+            }
+            fragmentTableDetail = TableDetailFragment.newInstance(tableId!!)
+            fragmentManager.beginTransaction()
+                    .add(R.id.tables_list_fragment,fragmentTableDetail)
+                    .commit()
+            supportActionBar?.title = Tables.getTableName(tableId!!)
+        }
+    }
+
 }

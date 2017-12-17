@@ -12,4 +12,6 @@ object Dishes {
     fun getDish(position: Int) = dishes[position]
 
     fun toArray() = dishes.toTypedArray()
+
+    fun count() = dishes.count()
 }

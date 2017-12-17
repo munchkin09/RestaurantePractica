@@ -1,6 +1,7 @@
 package es.carlosdevops.clc.restaurantepractica.fragment
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.app.Fragment
@@ -43,7 +44,7 @@ class TableDetailFragment : Fragment() {
         }
     }
 
-    private var table_position: Int? = null
+    private var tableId: Int? = null
 
 
     private var mListener: OnAddDishClickListener? = null
@@ -52,7 +53,7 @@ class TableDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            table_position = arguments.getInt(TABLE_POSITION)
+            tableId = arguments.getInt(TABLE_POSITION)
 
         }
         setHasOptionsMenu(true)
@@ -64,17 +65,16 @@ class TableDetailFragment : Fragment() {
         if (inflater != null) {
             // Inflate the layout for this fragment
             root = inflater.inflate(R.layout.fragment_table_detail, container, false)
-            val dish_list_per_table = root?.findViewById<ListView>(R.id.list_dishes_per_table)
-            if (dish_list_per_table != null) {
-                dish_list_per_table.adapter = ArrayAdapter<Dish>(activity,android.R.layout.simple_list_item_1, Tables.get(table_position!!).dishes?.toTypedArray())
+            val dishListPerTable = root?.findViewById<ListView>(R.id.list_dishes_per_table)
+            if (dishListPerTable != null) {
+                dishListPerTable.adapter = ArrayAdapter<Dish>(activity,android.R.layout.simple_list_item_1, Tables[tableId!!].dishes?.toTypedArray())
 
             }
         }
         return root
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed() {
+    private fun onButtonPressed() {
         if (mListener != null) {
             mListener!!.onAddDishClick()
         }
@@ -92,7 +92,7 @@ class TableDetailFragment : Fragment() {
 
     }
 
-    fun commonAttach(context: Any?) {
+    private fun commonAttach(context: Any?) {
         if (context is OnAddDishClickListener) {
             mListener = context
         }
@@ -115,12 +115,24 @@ class TableDetailFragment : Fragment() {
                 this.onButtonPressed()
 
             } else if (item.itemId == R.id.btn_calculate_bill) {
+                val bill = Tables.getTable(tableId!!).calculateBill()
+                val simpleAlert = AlertDialog.Builder(activity).create()
 
+                simpleAlert.setTitle("La cuenta")
+                simpleAlert.setMessage("$bill")
+
+                simpleAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(android.R.string.ok), {
+                    _, _ ->
+                    simpleAlert.dismiss()
+                })
+
+                simpleAlert.show()
             }
             return true
         }
         return super.onOptionsItemSelected(item)
     }
+
 
     /**
      * This interface must be implemented by activities that contain this
