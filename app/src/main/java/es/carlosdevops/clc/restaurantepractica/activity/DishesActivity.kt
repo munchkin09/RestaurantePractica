@@ -22,7 +22,6 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
             val intent = Intent(context,DishesActivity::class.java)
             intent.putExtra(ARG_TABLE,table)
             return intent
-
         }
     }
 
@@ -64,7 +63,14 @@ class DishesActivity : AppCompatActivity(), DishesListFragment.OnDishMenuSelecte
     }
 
     override fun onCancelSelected() {
+        commonOnCancel()
+    }
 
+    override fun onBackPressed() {
+        commonOnCancel()    
+    }
+
+    private fun commonOnCancel() {
         val intent = Intent()
         intent.putExtra(ARG_TABLE,tableId!!)
         setResult(Activity.RESULT_CANCELED,intent)

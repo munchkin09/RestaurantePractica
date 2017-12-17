@@ -65,17 +65,16 @@ class TableDetailFragment : Fragment() {
         if (inflater != null) {
             // Inflate the layout for this fragment
             root = inflater.inflate(R.layout.fragment_table_detail, container, false)
-            val dish_list_per_table = root?.findViewById<ListView>(R.id.list_dishes_per_table)
-            if (dish_list_per_table != null) {
-                dish_list_per_table.adapter = ArrayAdapter<Dish>(activity,android.R.layout.simple_list_item_1, Tables.get(tableId!!).dishes?.toTypedArray())
+            val dishListPerTable = root?.findViewById<ListView>(R.id.list_dishes_per_table)
+            if (dishListPerTable != null) {
+                dishListPerTable.adapter = ArrayAdapter<Dish>(activity,android.R.layout.simple_list_item_1, Tables[tableId!!].dishes?.toTypedArray())
 
             }
         }
         return root
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed() {
+    private fun onButtonPressed() {
         if (mListener != null) {
             mListener!!.onAddDishClick()
         }
@@ -93,7 +92,7 @@ class TableDetailFragment : Fragment() {
 
     }
 
-    fun commonAttach(context: Any?) {
+    private fun commonAttach(context: Any?) {
         if (context is OnAddDishClickListener) {
             mListener = context
         }
@@ -120,7 +119,7 @@ class TableDetailFragment : Fragment() {
                 val simpleAlert = AlertDialog.Builder(activity).create()
 
                 simpleAlert.setTitle("La cuenta")
-                simpleAlert.setMessage("Show simple Alert")
+                simpleAlert.setMessage("$bill")
 
                 simpleAlert.setButton(AlertDialog.BUTTON_POSITIVE, getString(android.R.string.ok), {
                     _, _ ->

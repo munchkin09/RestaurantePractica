@@ -25,32 +25,32 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
         fun intent(context: Context): Intent {
             val intent = Intent(context, TablesActivity::class.java)
 
-            isFRAGMENT_SELECTED = FRAGMENT_SELECTED.LIST
+            isFRAGMENT_SELECTED = FRAGMENTSELECTED.LIST
 
             return intent
 
         }
 
-        var isFRAGMENT_SELECTED = Companion.FRAGMENT_SELECTED.LIST
+        var isFRAGMENT_SELECTED = Companion.FRAGMENTSELECTED.LIST
 
-        enum class FRAGMENT_SELECTED {
+        enum class FRAGMENTSELECTED {
             LIST,
             DETAIL
         }
     }
 
 
-    var fragmentTableList: Fragment? = null
-    var fragmentTableDetail: Fragment? = null
+    private var fragmentTableList: Fragment? = null
+    private var fragmentTableDetail: Fragment? = null
 
-    var tableId: Int? = null
+    private var tableId: Int? = null
     var dish: Dish? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tables)
-        if (TablesActivity.isFRAGMENT_SELECTED == FRAGMENT_SELECTED.LIST) {
+        if (TablesActivity.isFRAGMENT_SELECTED == FRAGMENTSELECTED.LIST) {
             if (tables_list_fragment != null) {
 
                 fragmentTableList = TablesListFragment.newInstance()
@@ -96,23 +96,21 @@ class TablesActivity : AppCompatActivity(),TablesListFragment.OnTableSelectedLis
         if (requestCode == FOR_RESULT_DISHES) {
 
             if (resultCode == Activity.RESULT_OK) {
-                isFRAGMENT_SELECTED = FRAGMENT_SELECTED.DETAIL
+
                 //Aquí tenemos que recoger la mesa y el plato seleccionados del activityDishes
                 val dish = data?.getSerializableExtra(DishesActivity.ARG_DISH) as Dish
                 tableId = data?.getIntExtra(DishesActivity.ARG_TABLE,0)
                 Tables[tableId!!].dishes?.add(dish)
-                fragmentTableDetail = TableDetailFragment.newInstance(tableId!!)
-                fragmentManager.beginTransaction()
-                        .replace(R.id.tables_list_fragment,fragmentTableDetail)
-                        .commit()
-                supportActionBar?.title = Tables.getTableName(tableId!!)
-
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
-                isFRAGMENT_SELECTED = FRAGMENT_SELECTED.LIST
+
                 tableId = data?.getIntExtra(DishesActivity.ARG_TABLE,0)
             }
-
+            fragmentTableDetail = TableDetailFragment.newInstance(tableId!!)
+            fragmentManager.beginTransaction()
+                    .add(R.id.tables_list_fragment,fragmentTableDetail)
+                    .commit()
+            supportActionBar?.title = Tables.getTableName(tableId!!)
         }
     }
 
